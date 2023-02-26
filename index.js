@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express();
 const cors = require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 app.use(cors())
@@ -15,8 +15,21 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run() {
     try {
-        const services = client.db('prosPlum').collection('services');
+        const serviceCollection = client.db('prosPlum').collection('services');
 
+        app.get('/services', async (req, res) => {
+            const query = {};
+            const services = serviceCollection.find(query);
+            const result = await services.toArray();
+            res.send(result);
+        })
+
+        app.get('/service/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await serviceCollection.findOne(query);
+            res.send(result);
+        })
     }
     catch { }
 
