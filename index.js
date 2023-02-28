@@ -20,7 +20,6 @@ async function run() {
 
         app.post('/reviews', async (req, res) => {
             const review = req.body;
-            console.log(review);
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         })
@@ -54,6 +53,11 @@ async function run() {
             const query = {};
             const services = serviceCollection.find(query);
             const result = await services.limit(3).toArray();
+            res.send(result);
+        })
+        app.post('/addService', async (req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
             res.send(result);
         })
         app.get('/allservice', async (req, res) => {
