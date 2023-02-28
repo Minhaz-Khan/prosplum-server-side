@@ -26,12 +26,11 @@ async function run() {
         })
         app.get('/reviews/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id) }
+            const query = { _id: new ObjectId(id) }
             const reviews = reviewCollection.find(query);
             const result = await reviews.toArray();
             res.send(result);
         })
-
         app.get('/services', async (req, res) => {
             const query = {};
             const services = serviceCollection.find(query);
